@@ -24,17 +24,22 @@
         padding: 25px 30px;
         border-radius: 15px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
       h1 {
         text-align: center;
         color: #2c3e50;
         margin-bottom: 25px;
         font-family: "Hind Siliguri", sans-serif;
+        width: 100%;
       }
       /* --- Dropdown Styling --- */
       .dropdown {
         position: relative;
         margin-bottom: 12px;
+        width: 100%;
       }
       .dropdown-btn {
         background: #1b0b58;
@@ -75,19 +80,14 @@
       /* --- Dropdown Content & Animation --- */
       .dropdown-content {
         background-color: #f9f9f9;
-        /* Hide content by default */
         max-height: 0;
         overflow: hidden;
         margin-top: 5px;
         border-radius: 10px;
         box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.05);
-        /* Smooth transition for the slide-down effect */
         transition: max-height 0.8s ease-in-out;
       }
-      /* Class added by JavaScript to show the content */
       .dropdown-content.show {
-        /* Increased max-height to accommodate 60+ topics.
-       This value should be larger than the height of your longest topic list. */
         max-height: 5000px;
       }
       /* Links inside the dropdown */
@@ -108,6 +108,36 @@
         background-color: #e9ecef;
         padding-left: 30px;
         color: #2980b9;
+      }
+      /* New styles for the registration section */
+      .registration-text {
+        color: #1b0b58;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 25px;
+        font-size: 1.1em;
+      }
+      .registration-button {
+        display: block;
+        background: #1b0b58;
+        color: white;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        margin: 10px auto;
+        width: fit-content;
+      }
+      .registration-button:hover {
+        background-color: #2a1a7a;
+      }
+      .registration-button:active {
+        transform: scale(0.99);
       }
     </style>
   </head>
@@ -172,56 +202,44 @@
         const menuContainer = document.getElementById("subject-menu");
         // --- 1. Function to Generate the Menu ---
         function generateMenu() {
-          // Loop through each chapter in the data object
           chaptersData.forEach((chapter) => {
-            // Create the main container for the dropdown
             const dropdownDiv = document.createElement("div");
             dropdownDiv.className = "dropdown";
-            // Create the button for the chapter
             const button = document.createElement("button");
             button.className = "dropdown-btn";
             button.textContent = chapter.title;
-            // Create the container for the topics
             const contentDiv = document.createElement("div");
             contentDiv.className = "dropdown-content";
-            // Loop through the topics for the current chapter
             chapter.topics.forEach((topic) => {
               const link = document.createElement("a");
               link.textContent = topic.title;
               link.href = topic.url;
               contentDiv.appendChild(link);
             });
-            // Assemble the parts
             dropdownDiv.appendChild(button);
             dropdownDiv.appendChild(contentDiv);
-            // Add the completed dropdown to the main container
             menuContainer.appendChild(dropdownDiv);
           });
         }
         // --- 2. Function to Add Event Listeners ---
         function attachEventListeners() {
-          const allDropdownBtns = menuContainer.querySelectorAll(".dropdown-btn");
+          const allDropdownBtns =
+            menuContainer.querySelectorAll(".dropdown-btn");
           allDropdownBtns.forEach((btn) => {
             btn.addEventListener("click", function (event) {
               const currentContent = this.nextElementSibling;
-              const isAlreadyOpen = this.classList.contains("active");
-              // First, close all other dropdowns
               allDropdownBtns.forEach((otherBtn) => {
                 if (otherBtn !== this) {
-                  // Don't close the one we are interacting with yet
                   otherBtn.classList.remove("active");
                   otherBtn.nextElementSibling.classList.remove("show");
                 }
               });
-              // Toggle the clicked dropdown
               this.classList.toggle("active");
               currentContent.classList.toggle("show");
               event.stopPropagation();
             });
           });
-          // Optional: Close dropdowns if clicking outside
           window.addEventListener("click", function (event) {
-            // Check if the click was outside of any dropdown button
             if (!event.target.matches(".dropdown-btn")) {
               allDropdownBtns.forEach((btn) => {
                 btn.classList.remove("active");
@@ -233,6 +251,17 @@
         // --- 3. Initialize the Menu ---
         generateMenu();
         attachEventListeners();
+        // Add the registration elements
+        const registrationText = document.createElement("p");
+        registrationText.className = "registration-text";
+        registrationText.textContent = " মেডিকেল এডমিশনের জন্য প্রয়োজনীয় ইংরেজির সকল টপিক অনুশীলন করে পাও ৯০% কমনের কম্প্যাক্ট প্রিপারেশন! সবকয়টি চ্যাপ্টারের এক্সেস পেতে রেজিস্ট্রেশন করো। ";
+        menuContainer.appendChild(registrationText);
+
+        const registrationButton = document.createElement("a");
+        registrationButton.className = "registration-button";
+        registrationButton.textContent = "রেজিষ্ট্রেশন করো";
+        registrationButton.href = "#";
+        menuContainer.appendChild(registrationButton);
       });
     </script>
   </body>
